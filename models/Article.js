@@ -7,13 +7,12 @@ var Schema = mongoose.Schema;
 // This is similar to a Sequelize model
 var ArticleSchema = new Schema(
     {
-        headline: {
+        title: {
             type: String,
             required: true
         },
         summary: {
             type: String,
-            required: true
         },
         link: {
             type: String,
