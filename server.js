@@ -27,9 +27,8 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
-
-mongoose.connect(MONGODB_URI);
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsScraper";
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 // Routes
 
@@ -80,42 +79,42 @@ app.get("/articles", function (req, res) {
 });
 
 // Route for grabbing a specific Article by id, populate it with it's note
-app.get("/articles/:id", function (req, res) {
-  // TODO
-  // ====
-  // Finish the route so it finds one article using the req.params.id,
-  // and run the populate method with "note",
-  // then responds with the article with the note included
-  db.Article.findById(req.params.id)
-    .populate("notes")
-    .then(article => {
-      res.json(article);
-    })
+// app.get("/articles/:id", function (req, res) {
+//   // TODO
+//   // ====
+//   // Finish the route so it finds one article using the req.params.id,
+//   // and run the populate method with "note",
+//   // then responds with the article with the note included
+//   db.Article.findById(req.params.id)
+//     .populate("comments")
+//     .then(article => {
+//       res.json(article);
+//     })
 
-});
+// });
 
 // Route for saving/updating an Article's associated Note
-app.post("/articles/:id", function (req, res) {
-  // TODO
-  // ====
-  // save the new note that gets posted to the Notes collection
-  // then find an article from the req.params.id
-  // and update it's "note" property with the _id of the new note
-  db.Note.create(req.body)
-    .then(note => {
-      db.Article.findOneAndUpdate(
-        { _id: req.params.id },
-        { $push: { notes: note._id } },
-        { new: true }
-      )
-    })
-    .then(article => {
-      res.json(article);
-    })
-    .catch(err => {
-      res.json(err);
-    })
-});
+// app.post("/articles/:id", function (req, res) {
+//   // TODO
+//   // ====
+//   // save the new note that gets posted to the Notes collection
+//   // then find an article from the req.params.id
+//   // and update it's "note" property with the _id of the new note
+//   db.Note.create(req.body)
+//     .then(note => {
+//       db.Article.findOneAndUpdate(
+//         { _id: req.params.id },
+//         { $push: { notes: note._id } },
+//         { new: true }
+//       )
+//     })
+//     .then(article => {
+//       res.json(article);
+//     })
+//     .catch(err => {
+//       res.json(err);
+//     })
+// });
 
 // Start the server
 app.listen(PORT, function () {
